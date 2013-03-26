@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["ricny046@gmail.com"]
   spec.description   = %q{ Convert PDF docs to beautiful HTML files without losing text or format. This gem uses pdf2htmlEX to do the conversion.}
   spec.summary       = %q{ Convert PDF docs to beautiful HTML files without losing text or format. This gem uses pdf2htmlEX to do the conversion. }
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/ricn/kristin"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
