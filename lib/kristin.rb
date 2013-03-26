@@ -1,5 +1,9 @@
 require "kristin/version"
 
 module Kristin
-  # Your code goes here...
+  def self.convert(source, target)
+    unless File.exists?(source) 
+      raise IOError, "Source file (#{source}) does not exist."
+    end 
+  end
 end
