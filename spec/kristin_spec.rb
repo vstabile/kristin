@@ -5,7 +5,8 @@ describe Kristin do
   before(:all) do
     @one_page_pdf = file_path("one.pdf")
     @multi_page_pdf = file_path("multi.pdf")
-    @target_path = "/tmp/kristin"
+    @target_path = "tmp/kristin"
+    FileUtils.mkdir_p @target_path
   end
 
   after(:all) do
@@ -15,6 +16,16 @@ describe Kristin do
   describe ".convert" do
     it "should raise error if source file does not exists" do
       lambda { Kristin.convert("nonsense.pdf", "nonsense.html") }.should raise_error(IOError)
+    end
+
+    it "should convert a pdf to html" do
+      target = @target_path + "/one.html"
+      Kristin.convert(@one_page_pdf, target)
+      File.exists?(target).should == true
+    end
+
+    it "should raise error if pdf is not a real pdf" do
+      pending
     end
   end
 end
