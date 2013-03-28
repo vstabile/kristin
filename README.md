@@ -18,7 +18,15 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+You need to install [pdf2htmlEX](https://github.com/coolwanglu/pdf2htmlEX) on your system to use this gem.
+
+```ruby
+require 'kristin'
+
+# Converts document.pdf to document.html
+# This requires that the pdf2htmlEX command is present in your PATH.
+Kristin.convert('document.pdf', 'document.html')
+```
 
 ## Contributing
 
