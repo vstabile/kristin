@@ -11,9 +11,11 @@ module Kristin
     end
 
     ## TODO: determine exact command
-    
     cmd = "pdf2htmlex #{source} #{target}"
-    system("#{cmd} > /dev/null")
+    `#{cmd}`
+
+    ## TODO: Grab error message from pdf2htmlex and raise a better error
+    raise IOError, "Could not convert #{source}" if $?.exitstatus != 0
   end
 
   private
