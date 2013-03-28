@@ -2,13 +2,9 @@ require "kristin/version"
 
 module Kristin
   def self.convert(source, target)
-    unless File.exists?(source) 
-      raise IOError, "Source file (#{source}) does not exist."
-    end
-
-    unless which("pdf2htmlex") || which("pdf2htmlEX")
-      raise IOError, "Can't find pdf2htmlex executable in PATH"
-    end
+    
+    raise IOError, "Source file (#{source}) does not exist." if not File.exists?(source)
+    raise IOError, "Can't find pdf2htmlex executable in PATH" if not command_available?
 
     ## TODO: determine exact command
     cmd = "pdf2htmlex #{source} #{target}"
@@ -19,6 +15,10 @@ module Kristin
   end
 
   private
+
+  def self.command_available?
+    which("pdf2htmlex") || which("pdf2htmlEX")
+  end
 
   def self.which(cmd)
     exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
