@@ -6,8 +6,8 @@ module Kristin
     raise IOError, "Source file (#{source}) does not exist." if not File.exists?(source)
     raise IOError, "Can't find pdf2htmlex executable in PATH" if not command_available?
 
-    ## TODO: determine exact command
-    cmd = "pdf2htmlex #{source} #{target}"
+    cmd = "#{pdf2htmlex_command} #{source} #{target}"
+    
     `#{cmd}`
 
     ## TODO: Grab error message from pdf2htmlex and raise a better error
@@ -18,6 +18,17 @@ module Kristin
 
   def self.command_available?
     which("pdf2htmlex") || which("pdf2htmlEX")
+  end
+
+  def self.pdf2htmlex_command
+    cmd = nil
+    if which("pdf2htmlex")
+      cmd = "pdf2htmlex"
+    elsif which("pdf2htmlEX")
+      cmd = "pdf2htmlEX"
+    end
+
+    cmd 
   end
 
   def self.which(cmd)
