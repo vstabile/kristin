@@ -21,13 +21,8 @@ module Kristin
 
   def self.pdf2htmlex_command
     cmd = nil
-    if which("pdf2htmlex")
-      cmd = "pdf2htmlex"
-    elsif which("pdf2htmlEX")
-      cmd = "pdf2htmlEX"
-    end
-
-    cmd
+    cmd = "pdf2htmlex" if which("pdf2htmlex")
+    cmd = "pdf2htmlEX" if which("pdf2htmlEX")
   end
 
   def self.which(cmd)
