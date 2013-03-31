@@ -30,7 +30,6 @@ module Kristin
     ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
       exts.each do |ext|
         exe = File.join(path, "#{cmd}#{ext}")
-        
         return exe if File.executable? exe
       end
     end
@@ -57,7 +56,7 @@ module Kristin
     is_file = File.exists?(source) && !File.directory?(source)
     is_http = (URI(source).scheme == "http" || URI(source).scheme == "https") && Net::HTTP.get_response(URI(source)).is_a?(Net::HTTPSuccess)
     raise IOError, "Source (#{source}) is neither a file nor an URL." unless is_file || is_http
-
+    
     is_file ? source : download_file(source)
   end
 end
