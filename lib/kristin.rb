@@ -7,8 +7,8 @@ module Kristin
     raise IOError, "Can't find pdf2htmlex executable in PATH" if not command_available?
     src = determine_source(source)
     cmd = "#{pdf2htmlex_command} #{src} #{target}"
-    
-    `#{cmd}`
+    pid = Process.spawn(cmd, [:out, :err] => "/dev/null")
+    Process.waitpid(pid)
     ## TODO: Grab error message from pdf2htmlex and raise a better error
     raise IOError, "Could not convert #{src}" if $?.exitstatus != 0
   end
