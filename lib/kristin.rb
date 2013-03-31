@@ -60,14 +60,9 @@ module Kristin
 
   def self.determine_source(source)
     is_file = File.exists?(source) && !File.directory?(source)
-    is_http = URI(source).scheme == "http" && Net::HTTP.get_response(URI(source)).is_a?(Net::HTTPSuccess)
-    is_https = URI(source).scheme == "https" && Net::HTTP.get_response(URI(source)).is_a?(Net::HTTPSuccess)
-    raise IOError, "Source (#{source}) is neither a file nor an URL." unless is_file || is_http || is_https
+    is_http = (URI(source).scheme == "http" || URI(source).scheme == "https") && Net::HTTP.get_response(URI(source)).is_a?(Net::HTTPSuccess)
+    raise IOError, "Source (#{source}) is neither a file nor an URL." unless is_file || is_http
 
-    if is_file
-      source
-    else
-      download_file(source)
-    end
+    is_file ? source : download_file(source)
   end
 end
