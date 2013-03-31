@@ -27,6 +27,9 @@ require 'kristin'
 # Converts document.pdf to document.html
 # This requires that the pdf2htmlEX command is present in your PATH.
 Kristin.convert('document.pdf', 'document.html')
+
+# You can also convert a source file directly from an URL
+Kristin.convert('http://myserver.com/123/document.pdf', 'document.html')
 ```
 
 ## Contributing

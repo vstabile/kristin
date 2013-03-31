@@ -31,6 +31,12 @@ describe Kristin do
       File.exists?(target).should == true
     end
 
+    it "should convert a pdf from an URL" do
+      target = @target_path + "/from_url.html"
+      Kristin.convert("https://www.filepicker.io/api/file/vR0btUfRQiCF9ntRkW6Q", target)
+      File.exists?(target).should == true
+    end
+
     it "should raise error if pdf is not a real pdf" do
       lambda { Kristin.convert(@no_pdf, "nonsense.html") }.should raise_error(IOError)
     end
