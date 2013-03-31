@@ -16,7 +16,7 @@ module Kristin
   private
 
   def self.command_available?
-    which("pdf2htmlex") || which("pdf2htmlEX")
+    pdf2htmlex_command
   end
 
   def self.pdf2htmlex_command
