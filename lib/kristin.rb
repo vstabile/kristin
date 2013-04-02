@@ -5,6 +5,7 @@ require "net/http"
 module Kristin
   class Converter
     def initialize(source, target, options = {})
+      @options = options
       @source = source
       @target = target
     end
@@ -12,14 +13,23 @@ module Kristin
     def convert
       raise IOError, "Can't find pdf2htmlex executable in PATH" if not command_available?
       src = determine_source(@source)
-      cmd = "#{pdf2htmlex_command} #{src} #{@target}"
+      opts = process_options
+      cmd = "#{pdf2htmlex_command} #{opts} #{src} #{@target}"
       pid = Process.spawn(cmd, [:out, :err] => "/dev/null")
       Process.waitpid(pid)
+      
       ## TODO: Grab error message from pdf2htmlex and raise a better error
       raise IOError, "Could not convert #{src}" if $?.exitstatus != 0
     end
 
     private
+
+    def process_options
+      opts = []
+      opts.push("--process-outline 0") if @options[:process_outline] == false
+
+      opts.join(" ")
+    end
 
     def command_available?
       pdf2htmlex_command
@@ -66,7 +76,7 @@ module Kristin
     end
   end
 
-  def self.convert(source, target)
-    Converter.new(source, target).convert
+  def self.convert(source, target, options = {})
+    Converter.new(source, target, options).convert
   end
 end

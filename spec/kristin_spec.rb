@@ -6,6 +6,7 @@ describe Kristin do
     @one_page_pdf = file_path("one.pdf")
     @multi_page_pdf = file_path("multi.pdf")
     @no_pdf = file_path("image.png")
+    @large_pdf = file_path("large.pdf")
     @target_path = "tmp/kristin"
   end
 
@@ -57,11 +58,22 @@ describe Kristin do
       end
     end
 
-    describe "with options" do
-      it "should allow specifying first page" do
-        target = @target_path + "/multi.html"
-        Kristin::Converter.new(@one_page_pdf, target).convert
-        File.exists?(target).should == true
+    describe "options" do
+      #TODO: Only convert file once for performance
+      it "should process outline by default" do
+        target = @target_path + "/large.html"
+        Kristin::Converter.new(@large_pdf, target, { process_outline: false }).convert
+        doc = Nokogiri::HTML(File.open(target))
+        el = doc.css("#pdf-outline").first
+        el.children.should_not be_empty
+      end
+
+      it "should be possible to disable outline" do
+        target = @target_path + "/large.html"
+        Kristin::Converter.new(@large_pdf, target, { process_outline: false }).convert
+        doc = Nokogiri::HTML(File.open(target))
+        el = doc.css("#pdf-outline").first
+        el.children.first.text.strip.should be_empty
       end
     end
   end
