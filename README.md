@@ -32,7 +32,7 @@ Kristin.convert('document.pdf', 'document.html')
 Kristin.convert('http://myserver.com/123/document.pdf', 'document.html')
 
 # You can also specify options for fine grained conversion:
-Kristin.convert('document.pdf', 'document.html', { process_outline: false, first_page: 2, last_page: 4, hdpi: 72, vdpi: 72})
+Kristin.convert('document.pdf', 'document.html', { first_page: 2, last_page: 4, hdpi: 72, vdpi: 72})
 
 # Available options:
 
