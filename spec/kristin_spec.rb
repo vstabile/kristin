@@ -1,5 +1,7 @@
 require 'spec_helper'
- 
+require 'webrick'
+include WEBrick
+
 describe Kristin do 
   
   before(:all) do
@@ -8,6 +10,14 @@ describe Kristin do
     @no_pdf = file_path("image.png")
     @large_pdf = file_path("large.pdf")
     @target_path = "tmp/kristin"
+    @fast_opts = { process_outline: false, vdpi: 1, hdpi: 1, first_page: 1, last_page: 1 }
+    dir = File.expand_path(File.join(File.dirname(__FILE__), 'fixtures'))  
+    port = 50510
+    @url = "http://#{Socket.gethostname}:#{port}"
+    @t1 = Thread.new do
+      @server = HTTPServer.new(:Port => port, :DocumentRoot => dir, :AccessLog => [], :Logger => WEBrick::Log::new("/dev/null", 7))  
+      @server.start
+    end
   end
 
   before(:each) do
@@ -16,6 +26,10 @@ describe Kristin do
 
   after(:each) do
     FileUtils.rm_rf @target_path
+  end
+
+  after(:all) do
+    @t1.exit
   end
 
   describe "#convert" do
@@ -27,13 +41,13 @@ describe Kristin do
 
       it "should convert a one page pdf to one html file" do
         target = @target_path + "/one.html"
-        Kristin::Converter.new(@one_page_pdf, target).convert
+        Kristin::Converter.new(@one_page_pdf, target, @fast_opts).convert
         File.exists?(target).should == true
       end
 
       it "should convert a multi page pdf to one html file" do
         target = @target_path + "/multi.html"
-        Kristin::Converter.new(@multi_page_pdf, target).convert
+        Kristin::Converter.new(@multi_page_pdf, target, @fast_opts).convert
         File.exists?(target).should == true
       end
 
@@ -43,18 +57,18 @@ describe Kristin do
 
       it "should convert a pdf from an URL" do
         target = @target_path + "/from_url.html"
-        Kristin::Converter.new("http://riakhandbook.com/sample.pdf", target).convert
+        Kristin::Converter.new("#{@url}/one.pdf", target, @fast_opts).convert
         File.exists?(target).should == true
       end
 
       it "should raise an error if URL does not exist" do
         target = @target_path + "/from_url.html"
-        lambda { Kristin::Converter.new("http://www.filepicker.io/api/file/donotexist.pdf", target).convert }.should raise_error(IOError)
+        lambda { Kristin::Converter.new("#{@url}/donotexist.pdf", target).convert }.should raise_error(IOError)
       end
 
       it "should raise an error if URL file is not a real pdf" do
         target = @target_path + "/from_url.html"
-        lambda { Kristin::Converter.new("http://riakhandbook.com/images/riak-handbook-ipad.png", target).convert }.should raise_error(IOError)
+        lambda { Kristin::Converter.new("#{@url}/image.png", target).convert }.should raise_error(IOError)
       end
     end
 
