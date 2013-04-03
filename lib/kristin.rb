@@ -63,7 +63,7 @@ module Kristin
     def download_file(source)
       tmp_file = "/tmp/#{random_source_name}.pdf"
       File.open(tmp_file, "wb") do |saved_file|
-        open(source, 'rb') do |read_file|
+        open(URI.encode(source), 'rb') do |read_file|
           saved_file.write(read_file.read)
         end
       end
