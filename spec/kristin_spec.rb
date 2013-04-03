@@ -70,13 +70,6 @@ describe Kristin do
 
     describe "options" do
       #TODO: Only convert file once for performance
-      
-      it "should process outline by default" do
-        Kristin::Converter.new(@large_pdf, @target_file, { process_outline: false }).convert
-        doc = Nokogiri::HTML(File.open(@target_file))
-        el = doc.css("#pdf-outline").first
-        el.children.should_not be_empty
-      end
 
       it "should be possible to disable outline" do
         Kristin::Converter.new(@large_pdf, @target_file, { process_outline: false }).convert
