@@ -105,7 +105,7 @@ describe Kristin do
         target = @target_path + "/one.html"
         Kristin::Converter.new(@one_page_pdf, target, { hdpi: 5, vdpi: 5 }).convert
         doc = Nokogiri::HTML(File.open(target))
-        doc.xpath("//img/@src").first.content.size.should == 4938 # The size you get when hdpi and vdpi is 1 on @one_page_pdf
+        doc.xpath("//img/@src").first.content.size.should == 4938 # The size you get when hdpi and vdpi is 5 on @one_page_pdf
       end
     end
   end
