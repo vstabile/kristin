@@ -79,9 +79,8 @@ describe Kristin do
       end
 
       it "should be possible to specify first page" do
-        target = @target_path + "/multi.html"
-        Kristin::Converter.new(@multi_page_pdf, target, { first_page: 2 }).convert
-        doc = Nokogiri::HTML(File.open(target))
+        Kristin::Converter.new(@multi_page_pdf, @target_file, { first_page: 2 }).convert
+        doc = Nokogiri::HTML(File.open(@target_file))
         # Content only present on page 1
         content_from_page_1 = doc.search("//span").map(&:content).select {|c| c.include? "Geometric series"}
         # Content only present on page 2
