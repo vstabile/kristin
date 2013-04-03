@@ -27,7 +27,8 @@ module Kristin
     def process_options
       opts = []
       opts.push("--process-outline 0") if @options[:process_outline] == false
-
+      opts.push("--first-page #{@options[:first_page]}") if @options[:first_page]
+      opts.push("--last-page #{@options[:last_page]}") if @options[:last_page]
       opts.join(" ")
     end
 

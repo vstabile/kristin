@@ -60,6 +60,7 @@ describe Kristin do
 
     describe "options" do
       #TODO: Only convert file once for performance
+      
       it "should process outline by default" do
         target = @target_path + "/large.html"
         Kristin::Converter.new(@large_pdf, target, { process_outline: false }).convert
@@ -74,6 +75,30 @@ describe Kristin do
         doc = Nokogiri::HTML(File.open(target))
         el = doc.css("#pdf-outline").first
         el.children.first.text.strip.should be_empty
+      end
+
+      it "should be possible to specify first page" do
+        target = @target_path + "/multi.html"
+        Kristin::Converter.new(@multi_page_pdf, target, { first_page: 2 }).convert
+        doc = Nokogiri::HTML(File.open(target))
+        # Content only present on page 1
+        content_from_page_1 = doc.search("//span").map(&:content).select {|c| c.include? "Geometric series"}
+        # Content only present on page 2
+        content_from_page_2 = doc.search("//span").map(&:content).select {|c| c.include? "Generating functions"}
+        content_from_page_1.should be_empty
+        content_from_page_2.should_not be_empty
+      end
+
+      it "should be possible to specify last page" do
+        target = @target_path + "/multi.html"
+        Kristin::Converter.new(@multi_page_pdf, target, { last_page: 9 }).convert
+        doc = Nokogiri::HTML(File.open(target))
+        # Content only present on page 1
+        content_from_page_1 = doc.search("//span").map(&:content).select {|c| c.include? "Geometric series"}
+        # Content only present on page 10
+        content_from_page_10 = doc.search("//span").map(&:content).select {|c| c.include? "William Blake"}
+        content_from_page_1.should_not be_empty
+        content_from_page_10.should be_empty
       end
     end
   end
