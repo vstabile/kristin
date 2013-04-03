@@ -107,10 +107,6 @@ describe Kristin do
         doc = Nokogiri::HTML(File.open(target))
         doc.xpath("//img/@src").first.content.size.should == 538 # The size you get when hdpi and vdpi is 1 on @one_page_pdf
       end
-
-      it "should be possible to specify vdpi" do
-      
-      end
     end
   end
 
