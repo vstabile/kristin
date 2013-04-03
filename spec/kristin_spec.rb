@@ -100,6 +100,17 @@ describe Kristin do
         content_from_page_1.should_not be_empty
         content_from_page_10.should be_empty
       end
+
+      it "should be possible to specify hdpi and vdpi" do
+        target = @target_path + "/one.html"
+        Kristin::Converter.new(@one_page_pdf, target, { hdpi: 1, vdpi: 1 }).convert
+        doc = Nokogiri::HTML(File.open(target))
+        doc.xpath("//img[@class='bi']/@src").first.content.size.should == 538 # The size you get when hdpi and vdpi is 1 on @one_page_pdf
+      end
+
+      it "should be possible to specify vdpi" do
+      
+      end
     end
   end
 
@@ -111,7 +122,9 @@ describe Kristin do
     end
 
     it "should convert with options" do
-      pending
+      target = @target_path + "/one.html"
+      Kristin.convert(@one_page_pdf, target, { hdpi: 1, vdpi: 1 })
+      File.exists?(target).should == true
     end
   end
 end
