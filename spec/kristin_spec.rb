@@ -43,18 +43,18 @@ describe Kristin do
 
       it "should convert a pdf from an URL" do
         target = @target_path + "/from_url.html"
-        Kristin::Converter.new("https://www.filepicker.io/api/file/vR0btUfRQiCF9ntRkW6Q", target).convert
+        Kristin::Converter.new("http://riakhandbook.com/sample.pdf", target).convert
         File.exists?(target).should == true
       end
 
       it "should raise an error if URL does not exist" do
         target = @target_path + "/from_url.html"
-        lambda { Kristin::Converter.new("https://www.filepicker.io/api/file/donotexist.pdf", target).convert }.should raise_error(IOError)
+        lambda { Kristin::Converter.new("http://www.filepicker.io/api/file/donotexist.pdf", target).convert }.should raise_error(IOError)
       end
 
       it "should raise an error if URL file is not a real pdf" do
         target = @target_path + "/from_url.html"
-        lambda { Kristin::Converter.new("https://www.filepicker.io/api/file/agxKeTfQSWKvMR4CDXMq", target).convert }.should raise_error(IOError)
+        lambda { Kristin::Converter.new("http://riakhandbook.com/images/riak-handbook-ipad.png", target).convert }.should raise_error(IOError)
       end
     end
 
