@@ -30,6 +30,18 @@ Kristin.convert('document.pdf', 'document.html')
 
 # You can also convert a source file directly from an URL
 Kristin.convert('http://myserver.com/123/document.pdf', 'document.html')
+
+# You can also specify options for fine grained conversion:
+Kristin.convert('document.pdf', 'document.html', { process_outline: false, first_page: 2, last_page: 4, hdpi: 72, vdpi: 72})
+
+# Available options:
+
+# process_outline - show outline in HTML. Default: true
+# first_page - first page to convert. Default: 1
+# last_page - last page to convert. Default: 2147483647
+# hdpi - horizontal resolution for graphics in DPI. Default: 144
+# vdpi - vertical resolution for graphics in DPI. Default: 144
+
 ```
 
 ## Contributing
