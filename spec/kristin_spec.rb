@@ -100,9 +100,7 @@ describe Kristin do
 
       it "should be possible to specify hdpi and vdpi" do
         Kristin::Converter.new(@one_page_pdf, @target_file, { hdpi: 1, vdpi: 1 }).convert
-        f = File.open(@target_file)
-        doc = Nokogiri::HTML(f)
-        f.close
+        doc = Nokogiri::HTML(File.open(@target_file))
         doc.at_css("img").attributes["src"].value.size.should == 538 # The size you get when hdpi and vdpi is 1 on @one_page_pdf
       end
     end
