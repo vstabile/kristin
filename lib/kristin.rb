@@ -31,7 +31,8 @@ module Kristin
       opts.push("--last-page #{@options[:last_page]}") if @options[:last_page]
       opts.push("--hdpi #{@options[:hdpi]}") if @options[:hdpi]
       opts.push("--vdpi #{@options[:vdpi]}") if @options[:vdpi]
-    
+      opts.push("--zoom #{@options[:zoom]}") if @options[:zoom]
+      
       opts.join(" ")
     end
 

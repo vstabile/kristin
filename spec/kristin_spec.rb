@@ -103,6 +103,12 @@ describe Kristin do
         doc = Nokogiri::HTML(File.open(@target_file))
         doc.at_css("img").attributes["src"].value.size.should == 538 # The size you get when hdpi and vdpi is 1 on @one_page_pdf
       end
+
+      it "should be possible to specify zoom ratio" do
+        Kristin::Converter.new(@one_page_pdf, @target_file, { zoom: 2.0 }).convert
+        doc = Nokogiri::HTML(File.open(@target_file))
+        doc.at_css(".pi").attributes["data-data"].value.should include("2.0")
+      end
     end
   end
 
