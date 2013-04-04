@@ -42,6 +42,8 @@ Kristin.convert('document.pdf', 'document.html', { first_page: 2, last_page: 4, 
 # hdpi - horizontal resolution for graphics in DPI. Default: 144
 # vdpi - vertical resolution for graphics in DPI. Default: 144
 # zoom - zoom ratio. Default: 1.0
+# fit_width - fit width (pixels). Example: fit_width: 1024 
+# fit_height - fit height (pixels). Example: fit_height: 1024   
 
 ```
 

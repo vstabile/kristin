@@ -109,6 +109,12 @@ describe Kristin do
         doc = Nokogiri::HTML(File.open(@target_file))
         doc.at_css(".pi").attributes["data-data"].value.should include("2.0")
       end
+
+      it "should be possible to specify fit_width and fit_height" do
+        Kristin::Converter.new(@one_page_pdf, @target_file, { fit_width: 1024, fit_height: 1024 }).convert
+        doc = Nokogiri::HTML(File.open(@target_file))
+        doc.at_css(".pi").attributes["data-data"].value.should include("1.292929")
+      end
     end
   end
 
