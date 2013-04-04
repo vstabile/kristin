@@ -99,9 +99,9 @@ describe Kristin do
       end
 
       it "should be possible to specify hdpi and vdpi" do
-        Kristin::Converter.new(@one_page_pdf, @target_file, { hdpi: 1, vdpi: 1 }).convert
+        Kristin::Converter.new(@one_page_pdf, @target_file, { hdpi: 0, vdpi: 0 }).convert
         doc = IO.read(@target_file)
-        doc.size.should == 180141 # The size you get when hdpi and vdpi is 1 on @one_page_pdf
+        doc.should include("\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAAAAAAAAAHqZRakAAAADElEQVQI12M4dugAAASaAkndTfHQAAAAAElFTkSuQmCC\"") 
       end
 
       it "should be possible to specify zoom ratio" do
