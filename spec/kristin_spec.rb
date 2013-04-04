@@ -100,20 +100,20 @@ describe Kristin do
 
       it "should be possible to specify hdpi and vdpi" do
         Kristin::Converter.new(@one_page_pdf, @target_file, { hdpi: 1, vdpi: 1 }).convert
-        doc = Nokogiri::HTML(File.open(@target_file))
-        doc.at_css("img").attributes["src"].value.size.should == 538 # The size you get when hdpi and vdpi is 1 on @one_page_pdf
+        doc = IO.read(@target_file)
+        doc.size.should == 180141 # The size you get when hdpi and vdpi is 1 on @one_page_pdf
       end
 
       it "should be possible to specify zoom ratio" do
         Kristin::Converter.new(@one_page_pdf, @target_file, { zoom: 2.0 }).convert
-        doc = Nokogiri::HTML(File.open(@target_file))
-        doc.at_css(".pi").attributes["data-data"].value.should include("2.0")
+        doc = IO.read(@target_file)
+        doc.should include("2.000000")
       end
 
       it "should be possible to specify fit_width and fit_height" do
         Kristin::Converter.new(@one_page_pdf, @target_file, { fit_width: 1024, fit_height: 1024 }).convert
-        doc = Nokogiri::HTML(File.open(@target_file))
-        doc.at_css(".pi").attributes["data-data"].value.should include("1.292929")
+        doc = IO.read(@target_file)
+        doc.should include("1.292929")
       end
     end
   end
