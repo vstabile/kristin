@@ -1,5 +1,6 @@
 # Kristin
 [![Code Climate](https://codeclimate.com/github/ricn/kristin.png)](https://codeclimate.com/github/ricn/kristin)
+[![Build Status](https://travis-ci.org/ricn/kristin.png?branch=master)](https://travis-ci.org/ricn/kristin)
 
 Convert PDF docs to beautiful HTML files without losing text or format. This gem uses pdf2htmlEX to do the conversion.
 
