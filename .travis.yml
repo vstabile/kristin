@@ -4,6 +4,8 @@ rvm:
   - 2.0.0
   - ruby-head
   - rbx-19mode
+  - jruby-19mode
+  - jruby-head
 notifications:
   recipients:
     - ricny046@gmail.com

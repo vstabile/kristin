@@ -1,6 +1,7 @@
 require "kristin/version"
 require 'open-uri'
 require "net/http"
+require "spoon"
 
 module Kristin
   class Converter
@@ -13,9 +14,9 @@ module Kristin
     def convert
       raise IOError, "Can't find pdf2htmlex executable in PATH" if not command_available?
       src = determine_source(@source)
-      opts = process_options
-      cmd = "#{pdf2htmlex_command} #{opts} #{src} #{@target}"
-      pid = Process.spawn(cmd, [:out, :err] => "/dev/null")
+      opts = process_options.split(" ")
+      args = [pdf2htmlex_command, opts, src, @target].flatten
+      pid = Spoon.spawnp(*args)
       Process.waitpid(pid)
       
       ## TODO: Grab error message from pdf2htmlex and raise a better error
@@ -34,7 +35,6 @@ module Kristin
       opts.push("--zoom #{@options[:zoom]}") if @options[:zoom]
       opts.push("--fit-width #{@options[:fit_width]}") if @options[:fit_width]
       opts.push("--fit-height #{@options[:fit_height]}") if @options[:fit_height]
-
       opts.join(" ")
     end
 
