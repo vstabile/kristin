@@ -1,6 +1,4 @@
 require 'spec_helper'
-require 'webrick'
-include WEBrick
 
 describe Kristin do 
   
@@ -12,13 +10,6 @@ describe Kristin do
     @target_path = "tmp/kristin"
     @target_file = @target_path + "/output.html"
     @fast_opts = { process_outline: false, vdpi: 1, hdpi: 1, first_page: 1, last_page: 1 }
-    dir = File.expand_path(File.join(File.dirname(__FILE__), 'fixtures'))  
-    port = 50510
-    @url = "http://#{Socket.gethostname}:#{port}"
-    @t1 = Thread.new do
-      @server = HTTPServer.new(:Port => port, :DocumentRoot => dir, :AccessLog => [], :Logger => WEBrick::Log::new("/dev/null", 7))  
-      @server.start
-    end
   end
 
   before(:each) do
@@ -27,10 +18,6 @@ describe Kristin do
 
   after(:each) do
     FileUtils.rm_rf @target_path
-  end
-
-  after(:all) do
-    @t1.exit
   end
 
   describe "#convert" do
@@ -55,12 +42,14 @@ describe Kristin do
       end
 
       it "should convert a pdf from an URL" do
-        Kristin::Converter.new("#{@url}/one.pdf", @target_file, @fast_opts).convert
+        url = "http://kristin-test.s3.amazonaws.com/one.pdf"
+        Kristin::Converter.new(url, @target_file, @fast_opts).convert
         File.exists?(@target_file).should == true
       end
 
       it "should raise an error if URL does not exist" do
-        lambda { Kristin::Converter.new("#{@url}/donotexist.pdf", @target_file).convert }.should raise_error(IOError)
+        url = "http://kristin-test.s3.amazonaws.com/image.png"
+        lambda { Kristin::Converter.new(url, @target_file).convert }.should raise_error(IOError)
       end
 
       it "should raise an error if URL file is not a real pdf" do
