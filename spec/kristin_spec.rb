@@ -53,38 +53,31 @@ describe Kristin do
       end
 
       it "should raise an error if URL file is not a real pdf" do
-        lambda { Kristin::Converter.new("#{@url}/image.png", @target_file).convert }.should raise_error(IOError)
+        url = "http://kristin-test.s3.amazonaws.com/image.png"
+        lambda { Kristin::Converter.new(url, @target_file).convert }.should raise_error(IOError)
       end
     end
 
     describe "options" do
-      it "should be possible to disable outline" do
+      it "should be possible to disable sidebar" do
         Kristin::Converter.new(@large_pdf, @target_file, { process_outline: false }).convert
         doc = Nokogiri::HTML(File.open(@target_file))
-        el = doc.css("#pdf-outline").first
+        el = doc.css("#sidebar").first
         el.children.first.text.strip.should be_empty
       end
 
       it "should be possible to specify first page" do
         Kristin::Converter.new(@multi_page_pdf, @target_file, { first_page: 2 }).convert
         doc = Nokogiri::HTML(File.open(@target_file))
-        # Content only present on page 1
-        content_from_page_1 = doc.search("//span").map(&:content).select {|c| c.include? "Geometric series"}
-        # Content only present on page 2
-        content_from_page_2 = doc.search("//span").map(&:content).select {|c| c.include? "Generating functions"}
-        content_from_page_1.should be_empty
-        content_from_page_2.should_not be_empty
+        doc.css("#pf1").should be_empty
+        doc.css("#pf2").should_not be_empty
       end
 
       it "should be possible to specify last page" do
         Kristin::Converter.new(@multi_page_pdf, @target_file, { last_page: 9 }).convert
         doc = Nokogiri::HTML(File.open(@target_file))
-        # Content only present on page 1
-        content_from_page_1 = doc.search("//span").map(&:content).select {|c| c.include? "Geometric series"}
-        # Content only present on page 10
-        content_from_page_10 = doc.search("//span").map(&:content).select {|c| c.include? "William Blake"}
-        content_from_page_1.should_not be_empty
-        content_from_page_10.should be_empty
+        doc.css("#pf1").should_not be_empty
+        doc.css("#pf10").should be_empty
       end
 
       it "should be possible to specify hdpi and vdpi" do
@@ -102,7 +95,7 @@ describe Kristin do
       it "should be possible to specify fit_width and fit_height" do
         Kristin::Converter.new(@one_page_pdf, @target_file, { fit_width: 1024, fit_height: 1024 }).convert
         doc = IO.read(@target_file)
-        doc.should include("1.292929")
+        doc.should include("1.293109")
       end
     end
   end
