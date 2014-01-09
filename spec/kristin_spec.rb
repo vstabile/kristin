@@ -7,7 +7,8 @@ describe Kristin do
     @multi_page_pdf = file_path("multi.pdf")
     @no_pdf = file_path("image.png")
     @large_pdf = file_path("large.pdf")
-    @target_path = "tmp/kristin"
+    @target_path = "#{Dir::tmpdir}"
+    @target_path[0] = ""
     @target_file = @target_path + "/output.html"
     @fast_opts = { process_outline: false, vdpi: 1, hdpi: 1, first_page: 1, last_page: 1 }
   end
